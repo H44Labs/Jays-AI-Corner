@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Engineering Quiz - Jay's AI Corner</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #2B2D42 0%, #1a1b2e 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #ffffff;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: rgba(139, 92, 246, 0.1);
+            border-radius: 20px;
+            border: 2px solid #8B5CF6;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: #8B5CF6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            font-weight: bold;
+            color: white;
+            margin: 0 auto 20px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #FFC107;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #C8C8D2;
+        }
+
+        .question-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 2px solid #8B5CF6;
+        }
+
+        .question-number {
+            background: #8B5CF6;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .question-text {
+            font-size: 1.3em;
+            margin-bottom: 25px;
+            color: #FFC107;
+            font-weight: 600;
+        }
+
+        .option {
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option:hover {
+            background: rgba(139, 92, 246, 0.2);
+            border-color: #8B5CF6;
+            transform: translateX(5px);
+        }
+
+        .option input[type="radio"] {
+            margin-right: 15px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .option label {
+            cursor: pointer;
+            display: inline-block;
+            width: calc(100% - 35px);
+        }
+
+        .option.correct {
+            background: rgba(16, 185, 129, 0.2);
+            border-color: #10B981;
+            border-width: 3px;
+        }
+
+        .option.incorrect {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: #EF4444;
+            border-width: 3px;
+        }
+
+        .explanation {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(139, 92, 246, 0.15);
+            border-radius: 8px;
+            border-left: 4px solid #FFC107;
+            display: none;
+        }
+
+        .explanation.show {
+            display: block;
+        }
+
+        .explanation-title {
+            font-weight: 600;
+            color: #FFC107;
+            margin-bottom: 8px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            display: block;
+            margin: 30px auto;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.6);
+        }
+
+        .score-card {
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+            border-radius: 20px;
+            margin: 30px 0;
+            display: none;
+        }
+
+        .score-card.show {
+            display: block;
+        }
+
+        .score-number {
+            font-size: 4em;
+            font-weight: bold;
+            color: #FFC107;
+            margin: 20px 0;
+        }
+
+        .score-message {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+
+        .nice-badge {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #8B5CF6;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .question-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">J</div>
+            <h1>Prompt Engineering Quiz</h1>
+            <p class="subtitle">Test Your Knowledge - Jay's AI Corner</p>
+        </div>
+
+        <form id="quizForm">
+            <!-- Question 1 -->
+            <div class="question-card">
+                <div class="question-number">Question 1 of 10</div>
+                <div class="question-text">What is the MOST important element of an effective prompt?</div>
+                
+                <div class="option">
+                    <input type="radio" name="q1" value="0" id="q1a">
+                    <label for="q1a">Using fancy vocabulary</label>
+                </div>
+                <div class="option">
+                    <input type="radio" name="q1" value="1" id="q1b">
+                    <label for="q1b">Being specific and clear about what you want</label>
+                </div>
+                <div class="option">
+                    <input type="radio" name="q1" value="2" id="q1c">
+                    <label for="q1c">Making it as long as possible</label>
+                </div>
+                <div class="option">
+                    <input type="radio" name="q1" value="3" id="q1d">
+                    <label for="q1d">Using technical jargon</label>
+                </div>
+                
+                <div class="explanation" data-question="1">
+                    <div class="explanation-title">✓ Explanation:</div>
+                    <div>Clarity and specificity are crucial. The AI needs to understand exactly what you're asking for to provide useful results. Fancy words or length don't improve output quality.</div>
+                </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="question-card">
+                <div class="question-number">Question 2 of 10</div>
+                <div class="question-text">Which of the following is an example of a VAGUE prompt?</div>
+                
+                <div class="option">
+                    <input type="radio" name="q2" value="0" id="q2a">
+                    <label for="q2a">Write a 3-paragraph email to Sarah explaining our Q1 results</label>
+                </div>
+                <div class="option">
+                    <input type="radio" name="q2" value="1" id="q2b">
+                    <label for="q2b">Help me with marketing</label>
+                </div>
+                <div class="option">
+                    <input type="radio" name="q2" value="2" id="q2c">
+                    <label for="q2c">Create a table comparing features A, B, and C across products X and Y</label>
+                </div>
+                <div class="option">
+                    <input type="radio" name="q2" value="3" id="q2d">
+                    <label for="q2d">Summarize this document in 5 bullet points</label>
+                </div>
+                
+                <div class="explanation" data-question="2">
+                    <div class="explanation-title">✓ Explanation:</div>
+                    <div>"Help me with marketing" is too vague - it doesn't specify what kind of help, what marketing task, or what the goal is. The other options all have clear, specific requests.</div>
+                </div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="question-card">
+                <div class="question-number">Question 3 of 10</div>
+                <div class="question-text">What does the 'C' stand for in the '4 C's of Prompting'?</div>
+                
+                <div class="option">
+                    <input type="radio" name="q3" value="0" id="q3a">
+                    <label for="q3a">Clear, Complete, Concise, Constrained</label>
+                </div>
+                <div class="option">
+                    <input type="radio" name="q3" value="1" id="q3b">
+                    <label for="q3b">Creative, Clever, Correct, Conversational</label>
+                </div>
+                <div class="option">
+                    <input type="radio" name="q3" value="2" id="q3c">
+                    <label for="q3c">Contextual, Complex, Creative, Comprehensive</label>
+                </div>
+                <div class="option">
+                    <input type="radio" name="q3" value="3" id="q3d">
+                    <label for="q3d">Casual, Cool, Confident, Credible</label>
+                </div>
+                
+                <div class="explanation" data-question="3">
+                    <div class="explanation-title">✓ Explanation:</div>
+                    <div>The 4 C's are: Clear (specific), Complete (all context), Concise (no unnecessary words), and Constrained (boundaries like format and length).</div>
+                </div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="question-card">
+                <div class="question-number">Question 4 of 10</div>
+                <div class="question-text">Which prompt structure element helps the AI understand its role?</div>
+                
+                <div class="option">
+                    <input type="radio" name="q4" value="0" id="q4a">
+                    <label for="q4a">Examples</label>
+                </div>
+                <div class="option">
+                    <input type="radio" name="q4" value="1" id="q4b">
+                    <label for="q4b">Task description</label>
+                </div>
+                <div class="option">
+                    <input type="radio" name="q4" value="2" id="q4c">
+                    <label for="q4c">Role/Context</label>
+                </div>
+                <div class="option">
+                    <input type="radio" name="q4" value="3" id="q4d">
+                    <label for="q4d">Constraints</label>
+                </div>
+                
+                <div class="explanation" data-question="4">
+                    <div class="explanation-title">✓ Explanation:</div>
+                    <div>Role/Context sets up who the AI should be and what perspective to take (e.g., 'You are a solutions engineer...'). This frames how the AI approaches the task.</div>
+                </div>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="question-card">
+                <div class="question-number">Question 5 of 10</div>
+                <div class="question-text">What is 'Chain of Thought' prompting?</div>
+                
+                <div class="option">
+                    <input type="radio" name="q5" value="0" id="q5a">
+                    <label for="q5a">Writing multiple prompts in a row</label>
+                </div>
+                <div class="option">
+                    <input type="radio" name="q5" value="1" id="q5b">
+                    <label for="q5b">Asking the AI to show its reasoning step-by-step</label>
+                </div>
+                <div class="option">
+                    <input type="radio" name="q5" value="2" id="q5c">
+                    <label for="q5c">Connecting multiple AI tools together</label>
+                </div>
+                <div class="option">
+                    <input type="radio" name="q5" value="3" id="q5d">
+                    <label for="q5d">Creating a flowchart of prompts</label>
+                </div>
+                
+                <div class="explanation" data-question="5">
+                    <div class="explanation-title">✓ Explanation:</div>
+                    <div>Chain of Thought prompting asks the AI to explain its reasoning process step-by-step, which often leads to more accurate and thoughtful responses.</div>
+                </div>
+            </div>
+
+            <!-- Question 6 -->
+            <div class="question-card">
+                <div class="question-number">Question 6 of 10</div>
+                <div class="question-text">Which is a GOOD example of providing constraints in a prompt?</div>
+                
+                <div class="option">
+                    <input type="radio" name="q6" value="0" id="q6a">
+                    <label for="q6a">Just write something</label>
+                </div>
+                <div class="option">
+                    <input type="radio" name="q6" value="1" id="q6b">
+                    <label for="q6b">Make it good</label>
+                </div>
+                <div class="option">
+                    <input type="radio" name="q6" value="2" id="q6c">
+                    <label for="q6c">Format as a 3-column table with headers, keep under 200 words, use professional tone</label>
+                </div>
+                <div class="option">
+                    <input type="radio" name="q6" value="3" id="q6d">
+                    <label for="q6d">Do your best</label>
+                </div>
+                
+                <div class="explanation" data-question="6">
+                    <div class="explanation-title">✓ Explanation:</div>
+                    <div>Good constraints are specific about format, length, tone, and structure. They give the AI clear boundaries for the output.</div>
+                </div>
+            </div>
+
+            <!-- Question 7 -->
+            <div class="question-card">
+                <div class="question-number">Question 7 of 10</div>
+                <div class="question-text">What should you do if the AI's first response isn't perfect?</div>
+                
+                <div class="option">
+                    <input type="radio" name="q7" value="0" id="q7a">
+                    <label for="q7a">Give up and try a different AI</label>
+                </div>
+                <div class="option">
+                    <input type="radio" name="q7" value="1" id="q7b">
+                    <label for="q7b">Iterate and refine with follow-up prompts</label>
+                </div>
+                <div class="option">
+                    <input type="radio" name="q7" value="2" id="q7c">
+                    <label for="q7c">Accept it as-is</label>
+                </div>
+                <div class="option">
+                    <input type="radio" name="q7" value="3" id="q7d">
+                    <label for="q7d">Start over with the exact same prompt</label>
+                </div>
+                
+                <div class="explanation" data-question="7">
+                    <div class="explanation-title">✓ Explanation:</div>
+                    <div>Iterative refinement is key! Use follow-up prompts like 'Make it more technical' or 'Simplify for executives' to improve the output.</div>
+                </div>
+            </div>
+
+            <!-- Question 8 -->
+            <div class="question-card">
+                <div class="question-number">Question 8 of 10</div>
+                <div class="question-text">Why is it important to save prompts that work well?</div>
+                
+                <div class="option">
+                    <input type="radio" name="q8" value="0" id="q8a">
+                    <label for="q8a">To impress your colleagues</label>
+                </div>
+                <div class="option">
+                    <input type="radio" name="q8" value="1" id="q8b">
+                    <label for="q8b">To reuse them for similar tasks and save time</label>
+                </div>
+                <div class="option">
+                    <input type="radio" name="q8" value="2" id="q8c">
+                    <label for="q8c">To meet a quota</label>
+                </div>
+                <div class="option">
+                    <input type="radio" name="q8" value="3" id="q8d">
+                    <label for="q8d">Because AI has memory limitations</label>
+                </div>
+                
+                <div class="explanation" data-question="8">
+                    <div class="explanation-title">✓ Explanation:</div>
+                    <div>Saving successful prompts creates a personal library you can reuse and adapt for similar tasks, making you more efficient over time.</div>
+                </div>
+            </div>
+
+            <!-- Question 9 -->
+            <div class="question-card">
+                <div class="question-number">Question 9 of 10</div>
+                <div class="question-text">What's the benefit of providing examples in your prompt?</div>
+                
+                <div class="option">
+                    <input type="radio" name="q9" value="0" id="q9a">
+                    <label for="q9a">It makes the prompt longer</label>
+                </div>
+                <div class="option">
+                    <input type="radio" name="q9" value="1" id="q9b">
+                    <label for="q9b">It helps the AI understand the desired format and style</label>
+                </div>
+                <div class="option">
+                    <input type="radio" name="q9" value="2" id="q9c">
+                    <label for="q9c">It's required for all prompts</label>
+                </div>
+                <div class="option">
+                    <input type="radio" name="q9" value="3" id="q9d">
+                    <label for="q9d">It confuses the AI</label>
+                </div>
+                
+                <div class="explanation" data-question="9">
+                    <div class="explanation-title">✓ Explanation:</div>
+                    <div>Examples (few-shot learning) show the AI exactly what you want. They're especially helpful for establishing format, style, and tone.</div>
+                </div>
+            </div>
+
+            <!-- Question 10 -->
+            <div class="question-card">
+                <div class="question-number">Question 10 of 10</div>
+                <div class="question-text">Which is the BEST prompt for creating a competitive comparison?</div>
+                
+                <div class="option">
+                    <input type="radio" name="q10" value="0" id="q10a">
+                    <label for="q10a">Compare our product</label>
+                </div>
+                <div class="option">
+                    <input type="radio" name="q10" value="1" id="q10b">
+                    <label for="q10b">Make a comparison</label>
+                </div>
+                <div class="option">
+                    <input type="radio" name="q10" value="2" id="q10c">
+                    <label for="q10c">Create a 3-column table comparing NICE Copilot vs Genesys Cloud CX on: Price, AI Features, and Implementation Time. Use data from Q1 2025.</label>
+                </div>
+                <div class="option">
+                    <input type="radio" name="q10" value="3" id="q10d">
+                    <label for="q10d">Compare NICE and Genesys</label>
+                </div>
+                
+                <div class="explanation" data-question="10">
+                    <div class="explanation-title">✓ Explanation:</div>
+                    <div>This prompt is Clear (specific request), Complete (names products and criteria), Concise (no fluff), and Constrained (format, specific data points, timeframe).</div>
+                </div>
+            </div>
+
+            <button type="button" class="btn" onclick="checkAnswers()">Submit Quiz</button>
+        </form>
+
+        <div class="score-card" id="scoreCard">
+            <div class="score-message" id="scoreMessage"></div>
+            <div class="score-number" id="scoreNumber"></div>
+            <button class="btn" onclick="resetQuiz()">Take Quiz Again</button>
+        </div>
+    </div>
+
+    <div class="nice-badge">NICE</div>
+
+    <script>
+        const correctAnswers = {
+            q1: "1",
+            q2: "1",
+            q3: "0",
+            q4: "2",
+            q5: "1",
+            q6: "2",
+            q7: "1",
+            q8: "1",
+            q9: "1",
+            q10: "2"
+        };
+
+        function checkAnswers() {
+            let score = 0;
+            let answered = 0;
+
+            // Check if all questions are answered
+            for (let i = 1; i <= 10; i++) {
+                const question = document.querySelector(`input[name="q${i}"]:checked`);
+                if (question) {
+                    answered++;
+                }
+            }
+
+            if (answered < 10) {
+                alert('Please answer all questions before submitting!');
+                return;
+            }
+
+            // Grade the quiz
+            for (let i = 1; i <= 10; i++) {
+                const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                const options = document.querySelectorAll(`input[name="q${i}"]`);
+                const explanation = document.querySelector(`.explanation[data-question="${i}"]`);
+
+                if (selected) {
+                    const userAnswer = selected.value;
+                    const correctAnswer = correctAnswers[`q${i}`];
+
+                    // Mark correct/incorrect
+                    options.forEach(option => {
+                        const parent = option.parentElement;
+                        if (option.value === correctAnswer) {
+                            parent.classList.add('correct');
+                        }
+                        if (option.value === userAnswer && option.value !== correctAnswer) {
+                            parent.classList.add('incorrect');
+                        }
+                    });
+
+                    // Show explanation
+                    explanation.classList.add('show');
+
+                    // Count score
+                    if (userAnswer === correctAnswer) {
+                        score++;
+                    }
+                }
+            }
+
+            // Show results
+            showResults(score);
+        }
+
+        function showResults(score) {
+            const percentage = (score / 10) * 100;
+            let message = '';
+
+            if (percentage >= 90) {
+                message = '🌟 Outstanding! You\'re a prompt engineering pro!';
+            } else if (percentage >= 70) {
+                message = '👍 Great job! You have a solid understanding!';
+            } else if (percentage >= 50) {
+                message = '📚 Good start! Review the explanations to improve.';
+            } else {
+                message = '💪 Keep learning! Check out more Jay\'s AI Corner sessions.';
+            }
+
+            document.getElementById('scoreMessage').textContent = message;
+            document.getElementById('scoreNumber').textContent = score + '/10';
+            document.getElementById('scoreCard').classList.add('show');
+            
+            // Hide submit button
+            document.querySelector('.btn[onclick="checkAnswers()"]').style.display = 'none';
+
+            // Scroll to results
+            document.getElementById('scoreCard').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function resetQuiz() {
+            // Reset all selections
+            const radios = document.querySelectorAll('input[type="radio"]');
+            radios.forEach(radio => radio.checked = false);
+
+            // Remove all correct/incorrect classes
+            const options = document.querySelectorAll('.option');
+            options.forEach(option => {
+                option.classList.remove('correct', 'incorrect');
+            });
+
+            // Hide all explanations
+            const explanations = document.querySelectorAll('.explanation');
+            explanations.forEach(exp => exp.classList.remove('show'));
+
+            // Hide score card
+            document.getElementById('scoreCard').classList.remove('show');
+
+            // Show submit button
+            document.querySelector('.btn[onclick="checkAnswers()"]').style.display = 'block';
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
