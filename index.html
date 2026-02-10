@@ -23,30 +23,27 @@
             border-bottom: 1px solid #203043;
             padding: 24px;
             position: relative;
-            min-height: 260px;
+            min-height: auto;
         }
 
         .header-content {
             max-width: 1200px;
             margin: 0 auto;
             position: relative;
+            text-align: center;
         }
 
         .logo {
             width: 240px;
             height: 192px;
-            position: absolute;
-            right: 0;
-            top: 0;
-            z-index: 10;
+            display: block;
+            margin: 20px auto 0;
         }
 
         .header-text {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
             text-align: center;
-    }
+            margin: 0 auto;
+        }
 
         .header-text h1 {
             font-size: 48px;
@@ -258,22 +255,9 @@
         }
 
         @media (max-width: 768px) {
-            header {
-                min-height: auto;
-                padding-bottom: 220px;
-            }
-
             .logo {
-                position: static;
                 width: 180px;
                 height: 144px;
-                margin: 20px auto 0;
-                display: block;
-            }
-
-            .header-text {
-                max-width: 100%;
-                text-align: center;
             }
 
             .header-text h1 {
