@@ -22,6 +22,9 @@
             background: #111826;
             border-bottom: 1px solid #203043;
             padding: 24px;
+            position: relative;
+            padding-left: 420px; /* Space for the logo + some gap */
+            min-height: 100px; /* Adjust based on your needs */
         }
 
         .header-content {
@@ -35,6 +38,10 @@
         .logo {
             width: 390px;
             height: 384px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 10;
         }
 
         .header-text h1 {
@@ -246,14 +253,21 @@
         }
 
         @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                text-align: center;
+            header {
+                padding-left: 24px;
+                min-height: auto;
             }
 
             .logo {
+                position: static;
                 width: 144px;
                 height: 144px;
+                margin: 0 auto 16px;
+            }
+
+            .header-content {
+                flex-direction: column;
+                text-align: center;
             }
 
             .header-text h1 {
@@ -272,8 +286,8 @@
 </head>
 <body>
     <header>
+        <img src="jays-ai-corner-logo.png" alt="Jay's AI Corner" class="logo">
         <div class="header-content">
-            <img src="jays-ai-corner-logo.png" alt="Jay's AI Corner" class="logo">
             <div class="header-text">
                 <h1>Jay's AI Corner</h1>
                 <p>AI Training Quiz Series</p>
